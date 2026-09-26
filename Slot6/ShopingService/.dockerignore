@@ -1,0 +1,6 @@
+**/.git
+**/.idea
+**/.vscode
+**/src/test
+**/target/*
+!**/target/*.jar
