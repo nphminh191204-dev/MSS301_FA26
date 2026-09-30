@@ -1,0 +1,449 @@
+{
+  "info": {
+    "name": "MSS301 - Part 3-4 (OpenFeign, WireMock, API Gateway, Keycloak)",
+    "description": "Postman Collection for Part 3 & 4 testing as defined in part3-4_Test.md",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+  },
+  "auth": {
+    "type": "bearer",
+    "bearer": [
+      {
+        "key": "token",
+        "value": "{{jwt_token}}",
+        "type": "string"
+      }
+    ]
+  },
+  "variable": [
+    {
+      "key": "gateway",
+      "value": "http://localhost:9000",
+      "type": "string"
+    },
+    {
+      "key": "keycloak",
+      "value": "http://localhost:8181/realms/spring-microservices-realm",
+      "type": "string"
+    },
+    {
+      "key": "clientId",
+      "value": "spring-microservices-client",
+      "type": "string"
+    },
+    {
+      "key": "clientSecret",
+      "value": "mss301-dev-secret-change-me",
+      "type": "string"
+    },
+    {
+      "key": "order_base_url",
+      "value": "http://localhost:8081",
+      "type": "string"
+    },
+    {
+      "key": "inventory_base_url",
+      "value": "http://localhost:8082",
+      "type": "string"
+    },
+    {
+      "key": "product_base_url",
+      "value": "http://localhost:8080",
+      "type": "string"
+    },
+    {
+      "key": "jwt_token",
+      "value": "",
+      "type": "string"
+    }
+  ],
+  "item": [
+    {
+      "name": "Part 3 - Direct Calls (No Gateway)",
+      "item": [
+        {
+          "name": "T2.1 - Inventory In Stock (qty=100)",
+          "request": {
+            "auth": { "type": "noauth" },
+            "method": "GET",
+            "url": {
+              "raw": "{{inventory_base_url}}/api/inventory?skuCode=iphone_15&quantity=100",
+              "host": ["{{inventory_base_url}}"],
+              "path": ["api", "inventory"],
+              "query": [
+                { "key": "skuCode", "value": "iphone_15" },
+                { "key": "quantity", "value": "100" }
+              ]
+            }
+          },
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "exec": [
+                  "pm.test(\"Status code is 200\", () => pm.response.to.have.status(200));",
+                  "pm.test(\"Response body is true\", () => pm.expect(pm.response.text()).to.eql(\"true\"));"
+                ]
+              }
+            }
+          ]
+        },
+        {
+          "name": "T2.2 - Inventory Out of Stock (qty=101)",
+          "request": {
+            "auth": { "type": "noauth" },
+            "method": "GET",
+            "url": {
+              "raw": "{{inventory_base_url}}/api/inventory?skuCode=iphone_15&quantity=101",
+              "host": ["{{inventory_base_url}}"],
+              "path": ["api", "inventory"],
+              "query": [
+                { "key": "skuCode", "value": "iphone_15" },
+                { "key": "quantity", "value": "101" }
+              ]
+            }
+          },
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "exec": [
+                  "pm.test(\"Status code is 200\", () => pm.response.to.have.status(200));",
+                  "pm.test(\"Response body is false\", () => pm.expect(pm.response.text()).to.eql(\"false\"));"
+                ]
+              }
+            }
+          ]
+        },
+        {
+          "name": "T3.1 - Order Success (qty=100)",
+          "request": {
+            "auth": { "type": "noauth" },
+            "method": "POST",
+            "header": [
+              { "key": "Content-Type", "value": "application/json" }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n    \"skuCode\": \"iphone_15\",\n    \"price\": 1000,\n    \"quantity\": 100\n}"
+            },
+            "url": "{{order_base_url}}/api/order"
+          },
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "exec": [
+                  "pm.test(\"Status code is 201\", () => pm.response.to.have.status(201));",
+                  "pm.test(\"Order placed successfully\", () => pm.expect(pm.response.text()).to.include(\"Order Placed Successfully\"));"
+                ]
+              }
+            }
+          ]
+        },
+        {
+          "name": "T3.3 - Order Out of Stock (qty=101)",
+          "request": {
+            "auth": { "type": "noauth" },
+            "method": "POST",
+            "header": [
+              { "key": "Content-Type", "value": "application/json" }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n    \"skuCode\": \"iphone_15\",\n    \"price\": 1000,\n    \"quantity\": 101\n}"
+            },
+            "url": "{{order_base_url}}/api/order"
+          },
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "exec": [
+                  "pm.test(\"Status code is 500\", () => pm.response.to.have.status(500));"
+                ]
+              }
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "name": "Part 4 - Keycloak Token Authentication",
+      "item": [
+        {
+          "name": "T6.4 - Get Keycloak Access Token",
+          "request": {
+            "auth": { "type": "noauth" },
+            "method": "POST",
+            "header": [
+              { "key": "Content-Type", "value": "application/x-www-form-urlencoded" }
+            ],
+            "body": {
+              "mode": "urlencoded",
+              "urlencoded": [
+                { "key": "grant_type", "value": "client_credentials", "type": "text" },
+                { "key": "client_id", "value": "{{clientId}}", "type": "text" },
+                { "key": "client_secret", "value": "{{clientSecret}}", "type": "text" }
+              ]
+            },
+            "url": "{{keycloak}}/protocol/openid-connect/token"
+          },
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "exec": [
+                  "pm.test(\"Status code is 200\", () => pm.response.to.have.status(200));",
+                  "const json = pm.response.json();",
+                  "pm.test(\"Has access_token\", () => pm.expect(json.access_token).to.be.a('string'));",
+                  "pm.environment.set(\"jwt_token\", json.access_token);",
+                  "pm.collectionVariables.set(\"jwt_token\", json.access_token);"
+                ]
+              }
+            }
+          ]
+        },
+        {
+          "name": "T6.6 - Get Token With Invalid Secret (Negative 401)",
+          "request": {
+            "auth": { "type": "noauth" },
+            "method": "POST",
+            "header": [
+              { "key": "Content-Type", "value": "application/x-www-form-urlencoded" }
+            ],
+            "body": {
+              "mode": "urlencoded",
+              "urlencoded": [
+                { "key": "grant_type", "value": "client_credentials", "type": "text" },
+                { "key": "client_id", "value": "{{clientId}}", "type": "text" },
+                { "key": "client_secret", "value": "sai-secret", "type": "text" }
+              ]
+            },
+            "url": "{{keycloak}}/protocol/openid-connect/token"
+          },
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "exec": [
+                  "pm.test(\"Status code is 401\", () => pm.response.to.have.status(401));",
+                  "pm.test(\"Error is unauthorized_client\", () => pm.expect(pm.response.json().error).to.eql(\"unauthorized_client\"));"
+                ]
+              }
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "name": "Part 4 - Gateway Security (Negative 401 & Public)",
+      "item": [
+        {
+          "name": "T7.6 - Health Check (Public 200)",
+          "request": {
+            "auth": { "type": "noauth" },
+            "method": "GET",
+            "url": "{{gateway}}/actuator/health"
+          },
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "exec": [
+                  "pm.test(\"Status code is 200\", () => pm.response.to.have.status(200));",
+                  "pm.test(\"Health status UP\", () => pm.expect(pm.response.json().status).to.eql(\"UP\"));"
+                ]
+              }
+            }
+          ]
+        },
+        {
+          "name": "T7.1 - GET Products Without Token (401)",
+          "request": {
+            "auth": { "type": "noauth" },
+            "method": "GET",
+            "url": "{{gateway}}/api/products"
+          },
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "exec": [
+                  "pm.test(\"Status code is 401\", () => pm.response.to.have.status(401));",
+                  "pm.test(\"WWW-Authenticate header exists\", () => pm.response.to.have.header(\"WWW-Authenticate\"));"
+                ]
+              }
+            }
+          ]
+        },
+        {
+          "name": "T7.2 - GET Products With Garbage Token (401)",
+          "request": {
+            "auth": {
+              "type": "bearer",
+              "bearer": [
+                { "key": "token", "value": "abc.def.ghi", "type": "string" }
+              ]
+            },
+            "method": "GET",
+            "url": "{{gateway}}/api/products"
+          },
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "exec": [
+                  "pm.test(\"Status code is 401\", () => pm.response.to.have.status(401));",
+                  "pm.test(\"WWW-Authenticate has invalid_token error\", () => {",
+                  "  const authHeader = pm.response.headers.get(\"WWW-Authenticate\");",
+                  "  pm.expect(authHeader).to.include(\"invalid_token\");",
+                  "});"
+                ]
+              }
+            }
+          ]
+        },
+        {
+          "name": "T7.5 - POST Order Without Token (401)",
+          "request": {
+            "auth": { "type": "noauth" },
+            "method": "POST",
+            "header": [
+              { "key": "Content-Type", "value": "application/json" }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n    \"skuCode\": \"iphone_15\",\n    \"price\": 1000,\n    \"quantity\": 1\n}"
+            },
+            "url": "{{gateway}}/api/order"
+          },
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "exec": [
+                  "pm.test(\"Status code is 401\", () => pm.response.to.have.status(401));"
+                ]
+              }
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "name": "Part 4 - Gateway Security (With Valid JWT)",
+      "item": [
+        {
+          "name": "T8.1 - GET Products With Token",
+          "request": {
+            "method": "GET",
+            "url": "{{gateway}}/api/products"
+          },
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "exec": [
+                  "pm.test(\"Status code is 200\", () => pm.response.to.have.status(200));",
+                  "pm.test(\"Is an array\", () => pm.expect(pm.response.json()).to.be.an(\"array\"));"
+                ]
+              }
+            }
+          ]
+        },
+        {
+          "name": "T8.2 - GET Inventory With Token",
+          "request": {
+            "method": "GET",
+            "url": {
+              "raw": "{{gateway}}/api/inventory?skuCode=iphone_15&quantity=1",
+              "host": ["{{gateway}}"],
+              "path": ["api", "inventory"],
+              "query": [
+                { "key": "skuCode", "value": "iphone_15" },
+                { "key": "quantity", "value": "1" }
+              ]
+            }
+          },
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "exec": [
+                  "pm.test(\"Status code is 200\", () => pm.response.to.have.status(200));",
+                  "pm.test(\"In stock is true\", () => pm.expect(pm.response.text()).to.eql(\"true\"));"
+                ]
+              }
+            }
+          ]
+        },
+        {
+          "name": "T8.3 - POST Order With Token (Success)",
+          "request": {
+            "method": "POST",
+            "header": [
+              { "key": "Content-Type", "value": "application/json" }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n    \"skuCode\": \"iphone_15\",\n    \"price\": 1000,\n    \"quantity\": 1\n}"
+            },
+            "url": "{{gateway}}/api/order"
+          },
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "exec": [
+                  "pm.test(\"Status code is 201\", () => pm.response.to.have.status(201));",
+                  "pm.test(\"Order placed successfully\", () => pm.expect(pm.response.text()).to.include(\"Order Placed Successfully\"));"
+                ]
+              }
+            }
+          ]
+        },
+        {
+          "name": "T8.4 - POST Order Out of Stock (500)",
+          "request": {
+            "method": "POST",
+            "header": [
+              { "key": "Content-Type", "value": "application/json" }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n    \"skuCode\": \"iphone_15\",\n    \"price\": 1000,\n    \"quantity\": 101\n}"
+            },
+            "url": "{{gateway}}/api/order"
+          },
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "exec": [
+                  "pm.test(\"Status code is 500 from downstream service\", () => pm.response.to.have.status(500));"
+                ]
+              }
+            }
+          ]
+        },
+        {
+          "name": "T5.5 - Unknown Route (404)",
+          "request": {
+            "method": "GET",
+            "url": "{{gateway}}/api/khong-co-route"
+          },
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "exec": [
+                  "pm.test(\"Status code is 404\", () => pm.response.to.have.status(404));"
+                ]
+              }
+            }
+          ]
+        }
+      ]
+    }
+  ]
+}
