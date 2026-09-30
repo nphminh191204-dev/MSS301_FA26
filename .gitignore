@@ -8,3 +8,5 @@
 # Build
 **/target/
 **/*.class
+# Docker volume data
+**/volume-data/
