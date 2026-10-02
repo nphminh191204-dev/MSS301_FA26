@@ -1,0 +1,9 @@
+target/
+**/target/
+docker/
+**/docker/
+.idea/
+*.iml
+.vscode/
+*.log
+.DS_Store
