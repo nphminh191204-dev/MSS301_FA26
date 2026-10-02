@@ -597,43 +597,33 @@ Format: **type(scope): description**
 | docs | Tai lieu |
 | test | Viet test |
 
-### 6.2 Danh sach commit theo tung TODO
+### 6.2 Danh sach commit thuc te tren Repository (Conventional Commits)
 
+Cac commit da duoc thuc hien va push thanh cong len GitHub theo chuan Conventional Commits phan tach ro rang tung microservice va thanh phan:
+
+```bash
+* 50a9e19 docs(ass01): add assignment 1 comprehensive guide, specifications and templates
+* e67e312 test(ass01): add postman collection, environment and powershell integration test suite
+* 61ea82d feat(ass01-gateway): implement api-gateway with jwt filter, role-based authorization and routing
+* 3764888 feat(ass01-booking): implement booking-service with mysql, openfeign client, seat map and pricing calculation
+* 7f53650 feat(ass01-movie): implement movie-service with mongodb, genre, room, movie and showtime management
+* 0444bd9 feat(ass01-customer): implement customer-service with sql server, flyway migrations, auth and jwt
+* 6f51e25 feat(ass01-infra): setup docker-compose for sqlserver, mongo and mysql with init scripts
 ```
-chore: initial project structure with docker-compose for 3 databases
-chore(infra): add sqlserver init.sql and mysql init.sql scripts
-chore(customer-service): configure SQL Server datasource and Flyway
-feat(customer-service): add Customer entity enum CustomerRepository
-feat(customer-service): add BCrypt PasswordEncoder config TODO-1.2
-feat(customer-service): implement JwtService HS256 signing TODO-1.3
-feat(customer-service): implement AuthService login BR02 TODO-1.4
-feat(customer-service): add POST api/auth/login endpoint TODO-1.5
-feat(customer-service): add Flyway V1 V2 customer table T-SQL TODO-2.1
-feat(customer-service): implement register profile changePassword TODO-2.4-2.5
-feat(customer-service): implement Admin CRUD customers soft delete TODO-3.2-3.3
-feat(customer-service): add GlobalExceptionHandler ApiException TODO-0.6
-chore(movie-service): configure MongoDB datasource and DataSeeder TODO-4.1
-feat(movie-service): add Genre CinemaRoom CRUD BR03 TODO-4.2-4.4
-feat(movie-service): implement Movie MongoTemplate search BR15 TODO-5.1-5.4
-feat(movie-service): implement Showtime BR04 BR05 BR06 TODO-6.1-6.5
-chore(booking-service): configure MySQL Flyway V1 V2 TODO-7.2
-feat(booking-service): add Booking BookingDetail entities TODO-7.3
-feat(booking-service): add MovieClient OpenFeign TODO-7.4
-feat(booking-service): implement create booking BR07-BR14 TODO-7.5-7.7
-feat(booking-service): implement history getById cancel BR11 BR12 TODO-8.1-8.4
-feat(booking-service): implement revenue report BR13 sort TODO-9.1-9.3
-feat(api-gateway): configure routing 3 services TODO-10.3
-feat(api-gateway): add JWT SecurityConfig role-based auth TODO-10.4
-feat(api-gateway): add UserHeaderFilter X-User headers TODO-10.2
-feat(postman): add collection environment test scripts TODO-11.1-11.3
-docs: update README with setup and test accounts
-```
+
+**Chi tiet tung commit tuong ung cac TODO:**
+1. `6f51e25 feat(ass01-infra)`: Setup Docker Compose (3 container SQL Server, MongoDB, MySQL) va cac script khoi tao init.sql (TODO-0.1 -> 0.3).
+2. `0444bd9 feat(ass01-customer)`: Xay dung customer-service, ket noi SQL Server, Flyway migration V1/V2/V3, BCrypt password, JWT AuthService va API Auth/Profile/Admin CRUD (TODO-1.1 -> 3.3).
+3. `7f53650 feat(ass01-movie)`: Xay dung movie-service, ket noi MongoDB, DataSeeder, cac entity Genre, Room, Movie, Showtime cung logic kiem tra BR03, BR04, BR05, BR06 (TODO-4.1 -> 6.5).
+4. `3764888 feat(ass01-booking)`: Xay dung booking-service, ket noi MySQL, OpenFeign client giao tiep movie-service, kiem tra BR07 -> BR14, tinh gia theo phong, ma tran ghe va bao cao doanh thu (TODO-7.1 -> 9.3).
+5. `61ea82d feat(ass01-gateway)`: Xay dung api-gateway (port 9000), tich hop Spring Security JWT Decoder HS256, UserHeaderFilter truyen X-User header, phan quyen ADMIN/CUSTOMER (TODO-10.1 -> 10.4).
+6. `e67e312 test(ass01)`: Postman collection (day du 25+ requests test BR01 -> BR16), environment file va integration test suite PowerShell (TODO-11.1 -> 11.3).
+7. `50a9e19 docs(ass01)`: Document huong dan chi tiet danh cho bao cao Word, dac ta BRs, README huong dan khoi chay.
 
 **HINH 48** - GitHub: Commit History voi messages dung format  
 Huong dan:  
-1. Push code len GitHub (xem phan D ben duoi)  
-2. Mo GitHub repo -> tab Commits  
-3. Chup danh sach commits thay messages dung format
+1. Mo trinh duyet truy cap: `https://github.com/nphminh191204-dev/MSS301_FA26/commits/main`  
+2. Chup man hinh danh sach cac commits vua push hien ro commit hash va commit message chuan format Conventional Commits  
 
 ---
 
@@ -864,33 +854,26 @@ Duoi day la cac huong co the mo rong he thong trong tuong lai:
 
 ## D. HUONG DAN GIT VA GITHUB
 
-### Push code lan dau
+Toan bo ma nguon va tai lieu cua Assignment 1 da duoc commit va push len GitHub repository:
+- **Repository URL**: `https://github.com/nphminh191204-dev/MSS301_FA26.git`
+- **Branch**: `main`
+- **Folder Assignment 1**: `ASS01/`
+
+### Khi da hoan tat file Word bao cao (.docx):
+Sau khi ban hoan thien file bao cao Word (vi du luu thanh file `Assignment1_Report.docx` trong thu muc `ASS01/`), chay cac lenh sau de commit va push file Word len GitHub:
 
 ```bash
-# Tai thu muc ASS01
-git init
-git add .
-git commit -m "chore: initial project structure with docker-compose for 3 databases"
-
-# Tao repo tren github.com (ten: FUCinemaBookingSystem) roi:
-git remote add origin https://github.com/[YOUR_USERNAME]/FUCinemaBookingSystem.git
-git branch -M main
-git push -u origin main
+cd D:\Semester9_FA26\MSS301_FA26
+git add ASS01/Assignment1_Report.docx
+git commit -m "docs(ass01): add completed assignment 1 word report document"
+git push origin main
 ```
 
-### Sau moi nhom TODO:
+**HINH 49** - GitHub: Repository page voi tat ca files/folders trong thu muc ASS01  
+Huong dan: Mo `https://github.com/nphminh191204-dev/MSS301_FA26/tree/main/ASS01` tren trinh duyet -> chup man hinh giao dien GitHub hien thi day du cac folder service (`customer-service`, `movie-service`, `booking-service`, `api-gateway`, `docker-compose.yml`, ...).
 
-```bash
-git add .
-git commit -m "feat(customer-service): implement JwtService HS256 signing TODO-1.3"
-git push
-```
-
-**HINH 49** - GitHub: Repository page voi tat ca files/folders  
-Huong dan: Mo github.com/[username]/FUCinemaBookingSystem -> chup trang chinh repo
-
-**HINH 50** - GitHub: File Word da duoc upload  
-Huong dan: Push file Word (.docx) cung voi code -> chup thay file trong repo
+**HINH 50** - GitHub: File Word da duoc upload tren repository  
+Huong dan: Sau khi push file Word, mo trinh duyet xem thu muc `ASS01` tren GitHub -> chup hinh thay file `Assignment1_Report.docx` (hoac `Assignment 1_template.docx`) nam tren repo.
 
 ---
 
