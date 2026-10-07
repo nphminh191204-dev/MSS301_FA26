@@ -1,0 +1,244 @@
+{
+	"info": {
+		"_postman_id": "c1f79a25-2e6b-4890-8805-4f7d4323cb11",
+		"name": "Part 2 - OpenFeign Testing (Order & Inventory)",
+		"description": "Collection test tự động cho Part 2 - OpenFeign (Order Service <-> Inventory Service) theo Part2_OpenFegin_Testing_Guide.md",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+	},
+	"variable": [
+		{
+			"key": "order_base_url",
+			"value": "http://localhost:8081",
+			"type": "string"
+		},
+		{
+			"key": "inventory_base_url",
+			"value": "http://localhost:8082",
+			"type": "string"
+		}
+	],
+	"item": [
+		{
+			"name": "1. Test Case 1 - Đơn hợp lệ (đủ hàng - qty 100)",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"pm.test(\"Status code is 201 Created\", function () {",
+							"    pm.response.to.have.status(201);",
+							"});",
+							"",
+							"pm.test(\"Body is 'Order Placed Successfully'\", function () {",
+							"    pm.expect(pm.response.text()).to.eql(\"Order Placed Successfully\");",
+							"});"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "Content-Type",
+						"value": "application/json"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n  \"skuCode\": \"iphone_15\",\n  \"price\": 1000,\n  \"quantity\": 100\n}"
+				},
+				"url": {
+					"raw": "{{order_base_url}}/api/order",
+					"host": [
+						"{{order_base_url}}"
+					],
+					"path": [
+						"api",
+						"order"
+					]
+				},
+				"description": "Order Service gọi FeignClient sang Inventory Service kiểm tra iphone_15 với quantity 100. Kho có sẵn 100 sản phẩm nên trả về true và tạo đơn thành công."
+			},
+			"response": []
+		},
+		{
+			"name": "2. Test Case 2 - Đơn vượt tồn kho (qty 101 -> Hết hàng)",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"pm.test(\"Status code is 500 Internal Server Error\", function () {",
+							"    pm.response.to.have.status(500);",
+							"});"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "Content-Type",
+						"value": "application/json"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n  \"skuCode\": \"iphone_15\",\n  \"price\": 1000,\n  \"quantity\": 101\n}"
+				},
+				"url": {
+					"raw": "{{order_base_url}}/api/order",
+					"host": [
+						"{{order_base_url}}"
+					],
+					"path": [
+						"api",
+						"order"
+					]
+				},
+				"description": "Yêu cầu 101 sản phẩm, vượt quá tồn kho 100 của iphone_15. Inventory Service trả về false -> Order Service ném RuntimeException -> Status 500."
+			},
+			"response": []
+		},
+		{
+			"name": "3. Đặt sản phẩm khác đủ hàng (pixel_8 - qty 10)",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"pm.test(\"Status code is 201 Created\", function () {",
+							"    pm.response.to.have.status(201);",
+							"});",
+							"",
+							"pm.test(\"Body is 'Order Placed Successfully'\", function () {",
+							"    pm.expect(pm.response.text()).to.eql(\"Order Placed Successfully\");",
+							"});"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "Content-Type",
+						"value": "application/json"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n  \"skuCode\": \"pixel_8\",\n  \"price\": 899.99,\n  \"quantity\": 10\n}"
+				},
+				"url": {
+					"raw": "{{order_base_url}}/api/order",
+					"host": [
+						"{{order_base_url}}"
+					],
+					"path": [
+						"api",
+						"order"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "4. Debug - Gọi trực tiếp Inventory Service (Còn hàng - true)",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"pm.test(\"Status code is 200 OK\", function () {",
+							"    pm.response.to.have.status(200);",
+							"});",
+							"",
+							"pm.test(\"Response is true\", function () {",
+							"    pm.expect(pm.response.text()).to.eql(\"true\");",
+							"});"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "{{inventory_base_url}}/api/inventory?skuCode=iphone_15&quantity=100",
+					"host": [
+						"{{inventory_base_url}}"
+					],
+					"path": [
+						"api",
+						"inventory"
+					],
+					"query": [
+						{
+							"key": "skuCode",
+							"value": "iphone_15"
+						},
+						{
+							"key": "quantity",
+							"value": "100"
+						}
+					]
+				},
+				"description": "Gọi thẳng vào Inventory Service trên port 8082 để kiểm tra response của endpoint tồn kho."
+			},
+			"response": []
+		},
+		{
+			"name": "5. Debug - Gọi trực tiếp Inventory Service (Hết hàng - false)",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"pm.test(\"Status code is 200 OK\", function () {",
+							"    pm.response.to.have.status(200);",
+							"});",
+							"",
+							"pm.test(\"Response is false\", function () {",
+							"    pm.expect(pm.response.text()).to.eql(\"false\");",
+							"});"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "{{inventory_base_url}}/api/inventory?skuCode=iphone_15&quantity=101",
+					"host": [
+						"{{inventory_base_url}}"
+					],
+					"path": [
+						"api",
+						"inventory"
+					],
+					"query": [
+						{
+							"key": "skuCode",
+							"value": "iphone_15"
+						},
+						{
+							"key": "quantity",
+							"value": "101"
+						}
+					]
+				},
+				"description": "Gọi thẳng vào Inventory Service trên port 8082 với quantity 101 để xác nhận trả về false."
+			},
+			"response": []
+		}
+	]
+}
