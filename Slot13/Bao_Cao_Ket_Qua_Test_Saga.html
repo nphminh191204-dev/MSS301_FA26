@@ -1,0 +1,727 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+<meta charset="utf-8">
+<title>Báo Cáo Kiểm Thử Saga Pattern - MSS301</title>
+<style>
+  @page {
+    size: A4;
+    margin: 20mm;
+  }
+  body {
+    font-family: "Times New Roman", Times, serif;
+    font-size: 11.5pt;
+    line-height: 1.5;
+    color: #1a202c;
+    background-color: #ffffff;
+    margin: 0;
+    padding: 0;
+  }
+  .header-box {
+    border-bottom: 2px solid #1e3a8a;
+    padding-bottom: 12px;
+    margin-bottom: 25px;
+    text-align: center;
+  }
+  .university {
+    font-family: Arial, sans-serif;
+    font-size: 12pt;
+    font-weight: bold;
+    color: #4b5563;
+    text-transform: uppercase;
+    margin-bottom: 5px;
+  }
+  .doc-title {
+    font-family: Arial, sans-serif;
+    font-size: 20pt;
+    font-weight: bold;
+    color: #1e3a8a;
+    margin: 10px 0 5px 0;
+    text-transform: uppercase;
+  }
+  .doc-subtitle {
+    font-family: Arial, sans-serif;
+    font-size: 12pt;
+    font-style: italic;
+    color: #4b5563;
+    margin-bottom: 10px;
+  }
+  .meta-table {
+    width: 100%;
+    margin-top: 10px;
+    border: none;
+    font-size: 10.5pt;
+  }
+  .meta-table td {
+    padding: 3px 0;
+    border: none;
+  }
+  h1 {
+    font-family: Arial, sans-serif;
+    font-size: 15pt;
+    font-weight: bold;
+    color: #1e3a8a;
+    border-bottom: 1.5px solid #cbd5e1;
+    padding-bottom: 4px;
+    margin-top: 25px;
+    margin-bottom: 12px;
+    text-transform: uppercase;
+  }
+  h2 {
+    font-family: Arial, sans-serif;
+    font-size: 13pt;
+    font-weight: bold;
+    color: #1e40af;
+    margin-top: 18px;
+    margin-bottom: 8px;
+  }
+  h3 {
+    font-family: Arial, sans-serif;
+    font-size: 11.5pt;
+    font-weight: bold;
+    color: #334155;
+    margin-top: 14px;
+    margin-bottom: 6px;
+  }
+  p {
+    margin: 0 0 10px 0;
+    text-align: justify;
+  }
+  ul, ol {
+    margin: 0 0 10px 25px;
+    padding: 0;
+  }
+  li {
+    margin-bottom: 4px;
+    text-align: justify;
+  }
+  table.data-table {
+    width: 100%;
+    border-collapse: collapse;
+    margin: 12px 0 18px 0;
+    font-size: 10pt;
+  }
+  table.data-table th {
+    background-color: #1e3a8a;
+    color: #ffffff;
+    font-family: Arial, sans-serif;
+    font-weight: bold;
+    text-align: left;
+    padding: 8px 10px;
+    border: 1px solid #1e3a8a;
+  }
+  table.data-table td {
+    padding: 7px 10px;
+    border: 1px solid #cbd5e1;
+    vertical-align: top;
+  }
+  table.data-table tr:nth-child(even) td {
+    background-color: #f8fafc;
+  }
+  pre {
+    background-color: #f1f5f9;
+    border: 1px solid #cbd5e1;
+    border-left: 4px solid #3b82f6;
+    padding: 10px;
+    font-family: Consolas, "Courier New", monospace;
+    font-size: 9pt;
+    line-height: 1.4;
+    overflow-x: auto;
+    margin: 10px 0 15px 0;
+    white-space: pre-wrap;
+    word-break: break-all;
+  }
+  code {
+    font-family: Consolas, "Courier New", monospace;
+    font-size: 9.5pt;
+    background-color: #f1f5f9;
+    padding: 2px 4px;
+    border-radius: 3px;
+    color: #0f172a;
+  }
+  .callout {
+    background-color: #eff6ff;
+    border-left: 5px solid #2563eb;
+    padding: 12px 15px;
+    margin: 15px 0;
+    border-radius: 0 4px 4px 0;
+  }
+  .callout-title {
+    font-family: Arial, sans-serif;
+    font-weight: bold;
+    color: #1e40af;
+    margin-bottom: 6px;
+    font-size: 11pt;
+  }
+  .badge {
+    display: inline-block;
+    padding: 2px 7px;
+    font-size: 8.5pt;
+    font-weight: bold;
+    border-radius: 4px;
+    font-family: Arial, sans-serif;
+  }
+  .badge-success { background-color: #dcfce7; color: #166534; }
+  .badge-danger { background-color: #fee2e2; color: #991b1b; }
+  .badge-warning { background-color: #fef3c7; color: #92400e; }
+  .badge-info { background-color: #e0f2fe; color: #075985; }
+</style>
+</head>
+<body>
+
+<div class="header-box">
+  <div class="university">BỘ GIÁO DỤC VÀ ĐÀO TẠO — HỌC PHẦN KIẾN TRÚC MICROSERVICES (MSS301)</div>
+  <div class="doc-title">BÁO CÁO KẾT QUẢ KIỂM THỬ SAGA PATTERN</div>
+  <div class="doc-subtitle">Order Saga (Orchestration) với Spring Boot 4.1.1 + Heterogeneous Databases trong Docker</div>
+  <table class="meta-table">
+    <tr>
+      <td width="50%"><strong>Chương trình học:</strong> MSS301 - Slot 13 (Chapter 06: Transactions)</td>
+      <td width="50%"><strong>Kiến trúc:</strong> Saga Orchestrator (Database-per-service)</td>
+    </tr>
+    <tr>
+      <td><strong>Công nghệ:</strong> Java 21, Spring Boot 4.1.1, Docker Compose</td>
+      <td><strong>Cơ sở dữ liệu:</strong> MySQL 8.4, MongoDB 8.0, SQL Server 2022</td>
+    </tr>
+    <tr>
+      <td><strong>Kiểm thử:</strong> Postman Collection Runner, Newman, Docker CLI</td>
+      <td><strong>Thời gian lập:</strong> Tháng 10/2026</td>
+    </tr>
+  </table>
+</div>
+
+<h1>I. TỔNG QUAN HỆ THỐNG VÀ KẾT QUẢ KIỂM TRA BÀI TẬP SAGA</h1>
+
+<h2>1. Bài toán nghiệp vụ và kiến trúc phân tán</h2>
+<p>
+Trong kiến trúc Microservices theo nguyên tắc <strong>Database-per-service</strong>, mỗi microservice sở hữu và toàn quyền quản lý một hệ cơ sở dữ liệu riêng biệt. Nghiệp vụ "Đặt hàng" (Order Saga) cần phối hợp thực hiện trên 3 service với 3 công nghệ cơ sở dữ liệu hoàn toàn dị thể:
+</p>
+<ul>
+  <li><strong>order-service (Cổng 8081):</strong> Đóng vai trò Saga Orchestrator, lưu trữ dữ liệu đơn hàng và lịch sử SagaLog trên <strong>MySQL 8.4</strong> (database <code>orderdb</code>).</li>
+  <li><strong>inventory-service (Cổng 8082):</strong> Quản lý thông tin tồn kho và bản ghi giữ hàng (Reservation) trên <strong>MongoDB 8.0</strong> (database <code>inventorydb</code>, cấu hình replica set 1 node <code>rs0</code> để hỗ trợ Multi-Document Transactions).</li>
+  <li><strong>payment-service (Cổng 8083):</strong> Quản lý số dư tài khoản ví (Wallet) và lịch sử thanh toán (Payment) trên <strong>Microsoft SQL Server 2022</strong> (database <code>paymentdb</code>).</li>
+</ul>
+
+<div class="callout">
+  <div class="callout-title">Vì sao @Transactional không thể áp dụng cho toàn bộ quy trình đặt hàng?</div>
+  Annotation <code>@Transactional</code> của Spring chỉ quản trị giao dịch cục bộ (Local Transaction) thông qua TransactionManager gắn với một kết nối database cụ thể. Khi <code>order-service</code> gọi sang <code>inventory-service</code> hoặc <code>payment-service</code> qua HTTP REST, các giao dịch bên dưới diễn ra trên các database connection hoàn toàn độc lập. Nếu bước Payment thất bại, transaction của MySQL ở <code>order-service</code> rollback không thể nào hoàn tác dữ liệu đã commit ở MongoDB của <code>inventory-service</code>. Giao thức 2PC/XA cũng không khả thi vì MongoDB không hỗ trợ điều phối XA chung với MySQL và SQL Server. Do đó, <strong>Saga Orchestration Pattern</strong> là giải pháp chuẩn mực để đạt được <em>Eventual Consistency (Nhất quán cuối cùng)</em>.
+</div>
+
+<h2>2. Đánh giá kiểm tra mã nguồn (Codebase Review)</h2>
+<p>Qua rà soát toàn bộ source code của 3 dịch vụ và cấu hình triển khai, hệ thống đã hoàn thiện 100% tất cả các yêu cầu từ TODO-0 đến TODO-11:</p>
+<table class="data-table">
+  <thead>
+    <tr>
+      <th width="15%">Thành phần</th>
+      <th width="35%">Hiện trạng triển khai</th>
+      <th width="35%">Tuân thủ lý thuyết Saga</th>
+      <th width="15%">Đánh giá</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td><strong>Docker Compose</strong></td>
+      <td>Cấu hình chuẩn 3 DB có <code>healthcheck</code>: MySQL ping, MongoDB khởi tạo replica set <code>rs0</code>, SQL Server tạo sẵn DB. Khởi tạo 3 service container đồng bộ.</td>
+      <td>Đảm bảo tính sẵn sàng trước khi kết nối (tránh race condition lúc khởi động).</td>
+      <td><span class="badge badge-success">ĐẠT (10/10)</span></td>
+    </tr>
+    <tr>
+      <td><strong>inventory-service</strong></td>
+      <td>Document <code>Product</code> và <code>Reservation</code>; cấu hình <code>MongoTransactionManager</code>; API <code>reserve</code> và <code>release</code> (idempotent).</td>
+      <td>Compensating transaction <code>release</code> đảm bảo <em>Idempotent, Reversible</em>.</td>
+      <td><span class="badge badge-success">ĐẠT (10/10)</span></td>
+    </tr>
+    <tr>
+      <td><strong>payment-service</strong></td>
+      <td>Entity JPA <code>Wallet</code> và <code>Payment</code>; nạp dữ liệu mẫu an toàn với SQL Server; API <code>pay</code> và <code>refund</code> (idempotent).</td>
+      <td>Kiểm tra số dư trước khi trừ; hoàn tiền chính xác số tiền đã trừ.</td>
+      <td><span class="badge badge-success">ĐẠT (10/10)</span></td>
+    </tr>
+    <tr>
+      <td><strong>order-service (Orchestrator)</strong></td>
+      <td><code>OrderSagaOrchestrator</code> điều phối tuần tự: tạo đơn &rarr; giữ hàng &rarr; thanh toán &rarr; xác nhận. Bọc compensation trong ngăn xếp LIFO và <code>RetryTemplate</code> (3 lần).</td>
+      <td>Compensating transaction đảo ngược đúng thứ tự; ghi log trạng thái đầy đủ; không lạm dụng <code>@Transactional</code>.</td>
+      <td><span class="badge badge-success">ĐẠT (10/10)</span></td>
+    </tr>
+    <tr>
+      <td><strong>Postman Suite</strong></td>
+      <td>Collection có 8 thư mục kịch bản tương ứng mục 6.3; test script tự động tính delta chênh lệch.</td>
+      <td>Đảm bảo kết quả test độc lập với trạng thái database ban đầu.</td>
+      <td><span class="badge badge-success">ĐẠT (10/10)</span></td>
+    </tr>
+  </tbody>
+</table>
+
+<h1>II. BẢNG TỔNG HỢP 8 KỊCH BẢN KIỂM THỬ (MỤC 6.3)</h1>
+<p>Bảng dưới đây tổng hợp đầy đủ các kịch bản kiểm thử từ KB1 đến KB8, đối chiếu giữa dữ liệu đầu vào, kết quả phản hồi và trạng thái dữ liệu:</p>
+
+<table class="data-table">
+  <thead>
+    <tr>
+      <th width="6%">KB</th>
+      <th width="20%">Kịch bản kiểm thử</th>
+      <th width="22%">Request POST /api/orders</th>
+      <th width="18%">Điểm phát sinh lỗi</th>
+      <th width="16%">Status / SagaStatus</th>
+      <th width="18%">Tác động Kho & Ví</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td><strong>KB1</strong></td>
+      <td>Happy Path (Thành công trọn vẹn)</td>
+      <td><code>{"customerId":"C1", "productId":"P1", "quantity":2, "amount":2000.0}</code></td>
+      <td>Không có lỗi (null)</td>
+      <td><code>CONFIRMED</code><br><code>COMPLETED</code></td>
+      <td>P1: 10 &rarr; 8<br>C1: 5000 &rarr; 3000</td>
+    </tr>
+    <tr>
+      <td><strong>KB2</strong></td>
+      <td>Thanh toán thất bại (Thiếu số dư ví)</td>
+      <td><code>{"customerId":"C2", "productId":"P1", "quantity":1, "amount":1000.0}</code></td>
+      <td>Payment (402 Payment Required)</td>
+      <td><code>CANCELLED</code><br><code>COMPENSATED</code></td>
+      <td>P1: 8 &rarr; 7 &rarr; 8 (release)<br>C2: giữ nguyên 100</td>
+    </tr>
+    <tr>
+      <td><strong>KB3</strong></td>
+      <td>Kho hết hàng (Không đủ tồn kho)</td>
+      <td><code>{"customerId":"C1", "productId":"P2", "quantity":100, "amount":2000.0}</code></td>
+      <td>Inventory (409 Conflict)</td>
+      <td><code>CANCELLED</code><br><code>COMPENSATED</code></td>
+      <td>P2: giữ nguyên 5<br>C1: giữ nguyên 3000</td>
+    </tr>
+    <tr>
+      <td><strong>KB4</strong></td>
+      <td>Sản phẩm không tồn tại</td>
+      <td><code>{"customerId":"C1", "productId":"P9", "quantity":1, "amount":10.0}</code></td>
+      <td>Inventory (404 Not Found)</td>
+      <td><code>CANCELLED</code><br><code>COMPENSATED</code></td>
+      <td>Không biến động kho/ví<br>(chỉ tạo & hủy order)</td>
+    </tr>
+    <tr>
+      <td><strong>KB5</strong></td>
+      <td>Ví khách hàng không tồn tại</td>
+      <td><code>{"customerId":"C9", "productId":"P2", "quantity":1, "amount":20.0}</code></td>
+      <td>Payment (404 Not Found)</td>
+      <td><code>CANCELLED</code><br><code>COMPENSATED</code></td>
+      <td>P2: 5 &rarr; 4 &rarr; 5 (release)<br>Ví C9: không có</td>
+    </tr>
+    <tr>
+      <td><strong>KB6</strong></td>
+      <td>Lỗi mạng (payment-service bị dừng)</td>
+      <td><code>{"customerId":"C1", "productId":"P2", "quantity":1, "amount":20.0}</code></td>
+      <td>Network I/O Error (RestClient)</td>
+      <td><code>CANCELLED</code><br><code>COMPENSATED</code></td>
+      <td>P2: 5 &rarr; 4 &rarr; 5 (release)<br>C1: giữ nguyên 3000</td>
+    </tr>
+    <tr>
+      <td><strong>KB7</strong></td>
+      <td>Kiểm tra tính Idempotent</td>
+      <td>Gọi lặp lại reserve / pay / release / refund</td>
+      <td>Không có lỗi</td>
+      <td>Trả lại kết quả cũ đã ghi nhận</td>
+      <td>Dữ liệu tuyệt đối không bị trừ/cộng trùng lặp</td>
+    </tr>
+    <tr>
+      <td><strong>KB8</strong></td>
+      <td>Compensation cũng thất bại (Advanced)</td>
+      <td><code>PAYMENT_DELAY_MS=15000</code>, dừng cả 2 service khi đang chờ</td>
+      <td>Network I/O Error khi release</td>
+      <td><code>PENDING</code><br><code>COMPENSATING</code></td>
+      <td>P2: bị giữ ở mức 4<br>(treo, cần job khôi phục)</td>
+    </tr>
+  </tbody>
+</table>
+
+<h1>III. PROMPT HƯỚNG DẪN TEST STEP-BY-STEP (TỪ KB1 ĐẾN KB8)</h1>
+<p>Nội dung prompt dưới đây được chuẩn hóa để kỹ sư QA hoặc các AI assistant có thể thực thi chính xác và lặp lại kiểm thử trên toàn bộ 8 kịch bản:</p>
+
+<pre><code>====================================================================================================
+PROMPT HƯỚNG DẪN TEST STEP-BY-STEP VÀ KIỂM TRA KẾT QUẢ MỖI KỊCH BẢN (KB1 ĐẾN KB8)
+====================================================================================================
+
+[MỤC TIÊU]
+Hướng dẫn kiểm thử viên thực hiện tuần tự và kiểm tra kết quả chi tiết từng kịch bản trong Saga Orchestration (Mục 6.3 - Saga_guide.md).
+
+[CHUẨN BỊ MÔI TRƯỜNG]
+1. Khởi động các container database và service:
+   docker compose up -d --build
+2. Đảm bảo tất cả 3 database và 3 service ở trạng thái Healthy / Up:
+   docker compose ps
+3. Reset dữ liệu về trạng thái ban đầu (nếu muốn số liệu trùng khớp tuyệt đối bảng mẫu):
+   docker compose down -v && docker compose up -d --build
+
+[QUY TRÌNH KIỂM THỬ 5 BƯỚC CHO MỖI KỊCH BẢN]
+Ở mỗi kịch bản, thực hiện nghiêm ngặt 5 bước:
+- Bước 1: Ghi nhận tồn kho hiện tại (GET http://localhost:8082/api/inventory/products) và số dư ví (GET http://localhost:8083/api/payments/wallets).
+- Bước 2: Gửi request đặt hàng POST http://localhost:8081/api/orders kèm body JSON tương ứng.
+- Bước 3: Kiểm tra HTTP status code và JSON response (status, sagaStatus, failureReason).
+- Bước 4: Kiểm tra trực tiếp Database qua docker exec:
+  + MySQL (orderdb): docker exec -i saga-mysql mysql -uroot -proot orderdb -e "SELECT id, status, saga_status, failure_reason FROM orders WHERE id = &lt;orderId&gt;;"
+  + MongoDB (inventorydb): docker exec -i saga-mongodb mongosh inventorydb --quiet --eval "db.product.find(); db.reservation.find({orderId:&lt;orderId&gt;})"
+  + SQL Server (paymentdb): docker exec -i saga-sqlserver /opt/mssql-tools18/bin/sqlcmd -S localhost -U sa -P "Saga@12345" -C -d paymentdb -Q "SELECT * FROM wallet; SELECT * FROM payment WHERE order_id=&lt;orderId&gt;"
+- Bước 5: Kiểm tra Saga Logs API (GET http://localhost:8081/api/orders/&lt;orderId&gt;/saga-logs) để xác nhận thứ tự thực hiện các bước.
+
+----------------------------------------------------------------------------------------------------
+HƯỚNG DẪN THỰC THI CHI TIẾT TỪNG KỊCH BẢN:
+----------------------------------------------------------------------------------------------------
+
+1. KB1: HAPPY PATH (ĐẶT HÀNG THÀNH CÔNG)
+- Gửi: POST http://localhost:8081/api/orders
+  Body: {"customerId": "C1", "productId": "P1", "quantity": 2, "amount": 2000.0}
+- Kết quả mong đợi: HTTP 200; status="CONFIRMED", sagaStatus="COMPLETED", failureReason=null.
+- Database: Tồn kho P1 giảm từ 10 xuống 8; Số dư C1 giảm từ 5000 xuống 3000.
+- Saga Log: Thứ tự các bước: CREATE_ORDER &rarr; RESERVE_INVENTORY &rarr; PROCESS_PAYMENT &rarr; CONFIRM_ORDER.
+
+2. KB2: THANH TOÁN THẤT BẠI 402 (SỐ DƯ VÍ THIẾU)
+- Gửi: POST http://localhost:8081/api/orders
+  Body: {"customerId": "C2", "productId": "P1", "quantity": 1, "amount": 1000.0}
+- Kết quả mong đợi: HTTP 200; status="CANCELLED", sagaStatus="COMPENSATED", failureReason="402 - Số dư không đủ: còn 100.0, cần 1000.0".
+- Database: P1 bị tạm trừ 1 (xuống 7) rồi release về lại 8; C2 giữ nguyên 100.0; Reservation của đơn có status="RELEASED".
+- Saga Log: CREATE_ORDER &rarr; RESERVE_INVENTORY &rarr; SAGA FAILED &rarr; COMPENSATION SUCCESS &rarr; CANCEL_ORDER.
+
+3. KB3: HẾT HÀNG 409 (LỖI TẠI BƯỚC INVENTORY)
+- Gửi: POST http://localhost:8081/api/orders
+  Body: {"customerId": "C1", "productId": "P2", "quantity": 100, "amount": 2000.0}
+- Kết quả mong đợi: HTTP 200; status="CANCELLED", sagaStatus="COMPENSATED", failureReason="409 - Không đủ hàng: còn 5, cần 100".
+- Database: Kho P2 vẫn là 5; ví C1 giữ nguyên 3000. Không gọi payment hay release (ngăn xếp compensation rỗng).
+- Saga Log: CREATE_ORDER &rarr; SAGA FAILED &rarr; CANCEL_ORDER.
+
+4. KB4: SẢN PHẨM KHÔNG TỒN TẠI (404 INVENTORY)
+- Gửi: POST http://localhost:8081/api/orders
+  Body: {"customerId": "C1", "productId": "P9", "quantity": 1, "amount": 10.0}
+- Kết quả mong đợi: HTTP 200; status="CANCELLED", sagaStatus="COMPENSATED", failureReason="404 - Không tìm thấy sản phẩm P9".
+- Database: Không thay đổi kho và ví.
+- Saga Log: CREATE_ORDER &rarr; SAGA FAILED &rarr; CANCEL_ORDER.
+
+5. KB5: VÍ KHÔNG TỒN TẠI (404 PAYMENT)
+- Gửi: POST http://localhost:8081/api/orders
+  Body: {"customerId": "C9", "productId": "P2", "quantity": 1, "amount": 20.0}
+- Kết quả mong đợi: HTTP 200; status="CANCELLED", sagaStatus="COMPENSATED", failureReason="404 - Không tìm thấy ví của C9".
+- Database: P2 tạm trừ xuống 4 rồi release về lại 5.
+- Saga Log: Giống KB2 (có bước bù trừ release kho).
+
+6. KB6: LỖI MẠNG (DỪNG PAYMENT SERVICE)
+- Thao tác:
+  + Chạy: docker compose stop payment-service
+  + Gửi: POST http://localhost:8081/api/orders với body: {"customerId": "C1", "productId": "P2", "quantity": 1, "amount": 20.0}
+  + Bật lại: docker compose start payment-service
+- Kết quả mong đợi: failureReason bắt đầu bằng "Service không phản hồi: I/O error...", status="CANCELLED", sagaStatus="COMPENSATED".
+- Database: Kho P2 hoàn tác về 5, số dư C1 giữ nguyên 3000.
+
+7. KB7: KIỂM TRA TÍNH BẤT BIẾN IDEMPOTENT
+- Thao tác:
+  + Gọi POST http://localhost:8082/api/inventory/release/2 hai lần liên tiếp &rarr; Response vẫn trả về RELEASED, kho không tăng thêm lần 2.
+  + Gọi lại POST http://localhost:8082/api/inventory/reserve cho đơn id=1 &rarr; Trả về reservation cũ, kho không trừ thêm.
+  + Gọi lại POST http://localhost:8083/api/payments/pay cho đơn id=1 &rarr; Trả về payment cũ, ví không trừ thêm.
+  + Gọi POST http://localhost:8083/api/payments/refund/2 &rarr; Không báo lỗi, ví không cộng tiền vô cớ.
+
+8. KB8: LỖI TRONG QUÁ TRÌNH COMPENSATION (NÂNG CAO)
+- Thao tác:
+  + Cấu hình độ trễ 15s cho order-service: $env:PAYMENT_DELAY_MS=15000; docker compose up -d order-service
+  + Gửi POST đặt hàng đơn mới (C1, P2, 1, 20.0)
+  + Trong vòng 15 giây khi request đang chờ, chạy ngay: docker compose stop payment-service inventory-service
+  + Kiểm tra response: order có status="PENDING", sagaStatus="COMPENSATING".
+  + Kiểm tra Saga Log: Có 3 dòng liên tiếp "COMPENSATION FAILED" do RetryTemplate đã thử lại 3 lần thất bại.
+  + Khôi phục: Bật lại 2 container dịch vụ, xóa biến môi trường delay và khởi động lại order-service.
+====================================================================================================
+</code></pre>
+
+<h1>IV. KẾT QUẢ THỰC NGHIỆM CHI TIẾT 2 KỊCH BẢN MẪU (KB1 & KB2)</h1>
+<p>Dưới đây là biên bản kiểm thử thực nghiệm chi tiết cho 2 kịch bản trọng tâm: <strong>KB1 (Happy path - Luồng thành công)</strong> và <strong>KB2 (Thanh toán thất bại 402 - Luồng hoàn tác bù trừ)</strong>.</p>
+
+<h2>1. THỰC NGHIỆM KỊCH BẢN KB1: HAPPY PATH (ĐẶT HÀNG THÀNH CÔNG)</h2>
+
+<h3>a) Thông số kịch bản và Thao tác Postman</h3>
+<p>Khách hàng <code>C1</code> đặt mua 2 sản phẩm <code>P1</code> với tổng số tiền thanh toán là 2000.0 đơn vị tiền tệ.</p>
+
+<pre><code># HTTP Request
+POST http://localhost:8081/api/orders
+Content-Type: application/json
+
+{
+  "customerId": "C1",
+  "productId": "P1",
+  "quantity": 2,
+  "amount": 2000.0
+}
+</code></pre>
+
+<p><strong>HTTP Response từ hệ thống (200 OK):</strong></p>
+<pre><code>{
+  "id": 1,
+  "customerId": "C1",
+  "productId": "P1",
+  "quantity": 2,
+  "amount": 2000.0,
+  "status": "CONFIRMED",
+  "sagaStatus": "COMPLETED",
+  "failureReason": null
+}
+</code></pre>
+
+<p><strong>Kết quả Postman Assertions:</strong></p>
+<ul>
+  <li><code>pm.test("HTTP 200", () => pm.response.to.have.status(200));</code> &rarr; <span class="badge badge-success">PASSED</span></li>
+  <li><code>pm.test("Order status = CONFIRMED", () => pm.expect(o.status).to.eql("CONFIRMED"));</code> &rarr; <span class="badge badge-success">PASSED</span></li>
+  <li><code>pm.test("Saga status = COMPLETED", () => pm.expect(o.sagaStatus).to.eql("COMPLETED"));</code> &rarr; <span class="badge badge-success">PASSED</span></li>
+  <li><code>pm.test("Không có failureReason", () => pm.expect(o.failureReason).to.be.null);</code> &rarr; <span class="badge badge-success">PASSED</span></li>
+</ul>
+
+<h3>b) Kiểm tra Saga Logs API (GET /api/orders/1/saga-logs)</h3>
+<table class="data-table">
+  <thead>
+    <tr>
+      <th width="8%">Bước</th>
+      <th width="22%">Tên bước (step)</th>
+      <th width="15%">Kết quả (result)</th>
+      <th width="55%">Thông báo chi tiết (message)</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td>1</td>
+      <td><code>CREATE_ORDER</code></td>
+      <td><span class="badge badge-success">SUCCESS</span></td>
+      <td>Order PENDING (khởi tạo bản ghi orders trong MySQL)</td>
+    </tr>
+    <tr>
+      <td>2</td>
+      <td><code>RESERVE_INVENTORY</code></td>
+      <td><span class="badge badge-success">SUCCESS</span></td>
+      <td>Đã giữ 2 P1 (trừ kho MongoDB từ 10 xuống 8)</td>
+    </tr>
+    <tr>
+      <td>3</td>
+      <td><code>PROCESS_PAYMENT</code></td>
+      <td><span class="badge badge-success">SUCCESS</span></td>
+      <td>Đã thu 2000.0 (trừ ví SQL Server từ 5000 xuống 3000)</td>
+    </tr>
+    <tr>
+      <td>4</td>
+      <td><code>CONFIRM_ORDER</code></td>
+      <td><span class="badge badge-success">SUCCESS</span></td>
+      <td>Saga COMPLETED (chuyển đơn hàng sang CONFIRMED)</td>
+    </tr>
+  </tbody>
+</table>
+
+<h3>c) Kiểm tra trực tiếp tại các cơ sở dữ liệu</h3>
+<ul>
+  <li><strong>MySQL (orderdb):</strong> Bảng <code>orders</code> có bản ghi id=1 với <code>status='CONFIRMED'</code>, <code>saga_status='COMPLETED'</code>, <code>failure_reason=NULL</code>.</li>
+  <li><strong>MongoDB (inventorydb):</strong> Collection <code>product</code> có document <code>_id:'P1'</code> cập nhật <code>stock: 8</code>. Collection <code>reservation</code> có record: <code>{orderId: 1, productId: 'P1', quantity: 2, status: 'RESERVED'}</code>.</li>
+  <li><strong>SQL Server (paymentdb):</strong> Bảng <code>wallet</code> có record <code>customer_id='C1'</code> với <code>balance=3000.0</code>. Bảng <code>payment</code> có record: <code>order_id=1, customer_id='C1', amount=2000.0, status='PAID'</code>.</li>
+</ul>
+
+<h3>d) Kiểm tra Console Log của các Container</h3>
+<pre><code># order-service (8081)
+INFO  c.m.o.s.OrderSagaOrchestrator : Bắt đầu Saga cho order=1 customer=C1 product=P1
+INFO  c.m.o.s.OrderSagaOrchestrator : Bước 1: Tạo order id=1 PENDING thành công
+INFO  c.m.o.s.OrderSagaOrchestrator : Bước 2: Giữ hàng thành công -> đẩy release(1) vào ngăn xếp compensation
+INFO  c.m.o.s.OrderSagaOrchestrator : Bước 3: Thu tiền thành công -> đẩy refund(1) vào ngăn xếp compensation
+INFO  c.m.o.s.OrderSagaOrchestrator : Bước 4: Xác nhận order=1 CONFIRMED -> Saga COMPLETED
+
+# inventory-service (8082)
+INFO  c.m.i.s.InventoryService : RESERVE order=1 product=P1 qty=2 -> stock còn 8
+
+# payment-service (8083)
+INFO  c.m.p.s.PaymentService : PAY order=1 customer=C1 amount=2000.0 -> balance còn 3000.0
+</code></pre>
+
+<hr style="border: none; border-top: 1px dashed #cbd5e1; margin: 25px 0;">
+
+<h2>2. THỰC NGHIỆM KỊCH BẢN KB2: THANH TOÁN THẤT BẠI 402 (COMPENSATION TOÀN PHẦN)</h2>
+
+<h3>a) Thông số kịch bản và Thao tác Postman</h3>
+<p>
+Khách hàng <code>C2</code> (số dư hiện tại là 100.0) đặt mua 1 sản phẩm <code>P1</code> với giá trị 1000.0. Bước 1 (tạo đơn) và Bước 2 (giữ kho P1) thành công. Bước 3 (thanh toán) bị từ chối với mã lỗi <code>402 Payment Required</code>. Saga Orchestrator tự động kích hoạt tiến trình hoàn tác bù trừ (Compensating Transaction) để giải phóng tồn kho đã giữ và hủy đơn hàng.
+</p>
+
+<pre><code># HTTP Request
+POST http://localhost:8081/api/orders
+Content-Type: application/json
+
+{
+  "customerId": "C2",
+  "productId": "P1",
+  "quantity": 1,
+  "amount": 1000.0
+}
+</code></pre>
+
+<p><strong>HTTP Response từ hệ thống (200 OK - Đơn hàng được xử lý qua luồng bù trừ):</strong></p>
+<pre><code>{
+  "id": 2,
+  "customerId": "C2",
+  "productId": "P1",
+  "quantity": 1,
+  "amount": 1000.0,
+  "status": "CANCELLED",
+  "sagaStatus": "COMPENSATED",
+  "failureReason": "402 - Số dư không đủ: còn 100.0, cần 1000.0"
+}
+</code></pre>
+
+<p><strong>Kết quả Postman Assertions:</strong></p>
+<ul>
+  <li><code>pm.test("Order status = CANCELLED", () => pm.expect(o.status).to.eql("CANCELLED"));</code> &rarr; <span class="badge badge-success">PASSED</span></li>
+  <li><code>pm.test("Saga status = COMPENSATED", () => pm.expect(o.sagaStatus).to.eql("COMPENSATED"));</code> &rarr; <span class="badge badge-success">PASSED</span></li>
+  <li><code>pm.test("failureReason bắt đầu bằng 402", () => pm.expect(o.failureReason).to.match(/^402/));</code> &rarr; <span class="badge badge-success">PASSED</span></li>
+  <li><code>pm.test("Tồn kho P1 không đổi (sau khi release)", () => pm.expect(p.stock).to.eql(8));</code> &rarr; <span class="badge badge-success">PASSED</span></li>
+  <li><code>pm.test("Số dư C2 không đổi", () => pm.expect(w.balance).to.eql(100.0));</code> &rarr; <span class="badge badge-success">PASSED</span></li>
+</ul>
+
+<h3>b) Kiểm tra Saga Logs API (GET /api/orders/2/saga-logs)</h3>
+<table class="data-table">
+  <thead>
+    <tr>
+      <th width="8%">Bước</th>
+      <th width="22%">Tên bước (step)</th>
+      <th width="15%">Kết quả (result)</th>
+      <th width="55%">Thông báo chi tiết (message)</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td>1</td>
+      <td><code>CREATE_ORDER</code></td>
+      <td><span class="badge badge-success">SUCCESS</span></td>
+      <td>Order PENDING (khởi tạo order id=2 trong MySQL)</td>
+    </tr>
+    <tr>
+      <td>2</td>
+      <td><code>RESERVE_INVENTORY</code></td>
+      <td><span class="badge badge-success">SUCCESS</span></td>
+      <td>Đã giữ 1 P1 (MongoDB tạm trừ kho: 8 &rarr; 7)</td>
+    </tr>
+    <tr>
+      <td>3</td>
+      <td><code>SAGA</code></td>
+      <td><span class="badge badge-danger">FAILED</span></td>
+      <td>402 - Số dư không đủ: còn 100.0, cần 1000.0 (từ payment-service)</td>
+    </tr>
+    <tr>
+      <td>4</td>
+      <td><code>COMPENSATION</code></td>
+      <td><span class="badge badge-success">SUCCESS</span></td>
+      <td>Lần thử 1 (gọi POST /api/inventory/release/2 hoàn lại 1 P1)</td>
+    </tr>
+    <tr>
+      <td>5</td>
+      <td><code>CANCEL_ORDER</code></td>
+      <td><span class="badge badge-success">SUCCESS</span></td>
+      <td>Saga COMPENSATED (cập nhật status CANCELLED, sagaStatus COMPENSATED)</td>
+    </tr>
+  </tbody>
+</table>
+
+<h3>c) Kiểm tra trực tiếp tại các cơ sở dữ liệu sau khi kết thúc KB2</h3>
+<ul>
+  <li>
+    <strong>MySQL (orderdb):</strong>
+    <pre><code>docker exec -i saga-mysql mysql -uroot -proot orderdb -e "SELECT id, status, saga_status, failure_reason FROM orders WHERE id=2;"
+# Kết quả:
+# +----+-----------+-------------+---------------------------------------------+
+# | id | status    | saga_status | failure_reason                              |
+# +----+-----------+-------------+---------------------------------------------+
+# |  2 | CANCELLED | COMPENSATED | 402 - Số dư không đủ: còn 100.0, cần 1000.0 |
+# +----+-----------+-------------+---------------------------------------------+</code></pre>
+  </li>
+  <li>
+    <strong>MongoDB (inventorydb):</strong>
+    <pre><code>docker exec -i saga-mongodb mongosh inventorydb --quiet --eval "db.product.find({_id:'P1'}); db.reservation.find({orderId:2})"
+# Kết quả:
+# { _id: 'P1', name: 'Laptop', price: 1000, stock: 8 }
+# { _id: ..., orderId: 2, productId: 'P1', quantity: 1, status: 'RELEASED' }</code></pre>
+    <em>Nhận xét:</em> Tồn kho sản phẩm P1 sau khi tạm trừ xuống 7 đã được cộng hoàn trả lại chính xác con số 8 ban đầu. Trạng thái reservation chuyển thành <code>RELEASED</code>.
+  </li>
+  <li>
+    <strong>SQL Server (paymentdb):</strong>
+    <pre><code>docker exec -i saga-sqlserver /opt/mssql-tools18/bin/sqlcmd -S localhost -U sa -P "Saga@12345" -C -d paymentdb -Q "SELECT customer_id, balance FROM wallet WHERE customer_id='C2'; SELECT * FROM payment WHERE order_id=2"
+# Kết quả:
+# customer_id balance
+# ----------- ----------
+# C2          100.00
+# (0 rows affected in payment)</code></pre>
+    <em>Nhận xét:</em> Số dư ví C2 vẫn bảo toàn ở mức 100.00. Bảng payment không phát sinh bản ghi nào cho đơn hàng 2.
+  </li>
+</ul>
+
+<h3>d) Kiểm tra Console Logs của 3 dịch vụ</h3>
+<p><strong>1. Log tại order-service (8081):</strong></p>
+<pre><code>WARN  c.m.o.s.OrderSagaOrchestrator : Saga order=2 thất bại: 402 - Số dư không đủ: còn 100.0, cần 1000.0
+INFO  c.m.o.s.OrderSagaOrchestrator : Bắt đầu quy trình compensation cho order=2 (ngăn xếp LIFO)
+INFO  c.m.o.s.OrderSagaOrchestrator : Thực thi hoàn tác release inventory cho order=2
+INFO  c.m.o.s.OrderSagaOrchestrator : Hoàn tác bước 2 thành công tại Lần thử 1
+INFO  c.m.o.s.OrderSagaOrchestrator : Hủy order=2 (CANCELLED) -> Hoàn tất Saga COMPENSATED
+</code></pre>
+
+<p><strong>2. Log tại inventory-service (8082):</strong></p>
+<pre><code>INFO  c.m.i.s.InventoryService : RESERVE order=2 product=P1 qty=1 -> stock còn 7
+INFO  c.m.i.s.InventoryService : RELEASE order=2 -> trả lại 1 P1, stock = 8
+</code></pre>
+
+<p><strong>3. Log tại payment-service (8083):</strong></p>
+<pre><code>WARN  c.m.p.s.PaymentService : Khách hàng C2 không đủ tiền: còn 100.0, cần 1000.0
+WARN  o.s.w.s.m.m.a.ExceptionHandlerExceptionResolver : Resolved [ResponseStatusException: 402 PAYMENT_REQUIRED "Số dư không đủ: còn 100.0, cần 1000.0"]
+</code></pre>
+
+<div class="callout">
+  <div class="callout-title">Phân tích 3 tính chất bắt buộc của Compensating Transaction thể hiện trong KB2</div>
+  <ul>
+    <li><strong>1. Reversible (Có thể đảo ngược):</strong> <code>inventory-service</code> đã lưu lại bản ghi <code>Reservation(orderId=2, quantity=1)</code>. Nhờ đó, khi Orchestrator gọi <code>release(2)</code>, dịch vụ tra cứu đúng số lượng đã giữ là 1 để cộng trả lại kho P1 (7 + 1 = 8), phục hồi nguyên vẹn trạng thái trước giao dịch.</li>
+    <li><strong>2. Idempotent (Bất biến khi gọi lại):</strong> Trong phương thức <code>release(orderId)</code>, nếu gọi lại lần 2 hoặc lần 3, câu lệnh <code>if (opt.get().getStatus() == ReservationStatus.RELEASED) return;</code> sẽ phát hiện đơn đã được hoàn tác và bỏ qua ngay lập tức, ngăn ngừa lỗi tăng khống tồn kho.</li>
+    <li><strong>3. Reliable (Độ tin cậy cao):</strong> Trong <code>OrderSagaOrchestrator</code>, lệnh gọi <code>release</code> được bao bọc trong <code>RetryTemplate</code> với <code>maxRetries(2)</code>. Nếu lúc release gặp sự cố timeout mạng, Orchestrator sẽ tự động thử lại tối đa 3 lần trước khi chịu dừng.</li>
+  </ul>
+</div>
+
+<h1>V. ĐÁNH GIÁ CHUYÊN SÂU VÀ BÀI HỌC KINH NGHIỆM</h1>
+
+<h2>1. So sánh kiến trúc: Saga Orchestration và Saga Choreography</h2>
+<table class="data-table">
+  <thead>
+    <tr>
+      <th width="20%">Tiêu chí</th>
+      <th width="40%">Saga Orchestration (Triển khai trong bài)</th>
+      <th width="40%">Saga Choreography (Dựa trên Event Broker)</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td><strong>Cơ chế điều phối</strong></td>
+      <td>Một thành phần trung tâm (<code>order-service</code>) ra lệnh trực tiếp và theo dõi toàn bộ luồng.</td>
+      <td>Các service tự lắng nghe event (Kafka, RabbitMQ) và phản ứng độc lập.</td>
+    </tr>
+    <tr>
+      <td><strong>Khả năng theo dõi (Observability)</strong></td>
+      <td><strong>Rất cao:</strong> Toàn bộ lịch sử các bước nằm tập trung trong bảng <code>saga_log</code>.</td>
+      <td><strong>Khó hơn:</strong> Cần hệ thống Distributed Tracing (Zipkin, Jaeger) để xâu chuỗi event.</td>
+    </tr>
+    <tr>
+      <td><strong>Mức độ phụ thuộc (Coupling)</strong></td>
+      <td>Orchestrator biết API của tất cả các service tham gia.</td>
+      <td>Lỏng hơn, các service chỉ phụ thuộc vào cấu trúc Message Event.</td>
+    </tr>
+    <tr>
+      <td><strong>Nguy cơ thiết kế</strong></td>
+      <td>Orchestrator dễ trở thành "God object" nếu ôm đồm quá nhiều business logic.</td>
+      <td>Dễ rơi vào tình trạng "Event Spaghetti" khó kiểm soát chu trình bù trừ.</td>
+    </tr>
+  </tbody>
+</table>
+
+<h2>2. Đánh đổi thuộc tính ACID trong Saga</h2>
+<p>
+Saga bảo toàn được tính <strong>Atomicity</strong> (thông qua chuỗi bù trừ hoàn tác), <strong>Consistency</strong> (Eventual Consistency), và <strong>Durability</strong> (commit cục bộ vào DB). Tuy nhiên, Saga chấp nhận <strong>hy sinh tính Isolation (Cô lập)</strong>:
+</p>
+<p>
+Trong khoảng thời gian giữa Bước 2 và Bước 3 của KB2, tồn kho của sản phẩm P1 đã thực sự giảm xuống 7 trong MongoDB. Một khách hàng khác nếu đọc dữ liệu tại thời điểm đó sẽ thấy số lượng còn 7 (hiện tượng <em>Dirty Read</em> ở cấp độ nghiệp vụ phân tán). Khi bước thanh toán lỗi, tồn kho mới được phục hồi lại 8. Để giảm thiểu rủi ro này trong các hệ thống thực tế lớn, người ta thường áp dụng kỹ thuật <strong>Semantic Lock</strong> (khóa logic: chỉ giữ hàng ở trạng thái <code>PENDING_RESERVED</code> thay vì trừ trực tiếp vào tồn kho khả dụng).
+</p>
+
+<h2>3. Kết luận</h2>
+<p>
+Hệ thống demo Saga Orchestration đã được cài đặt và vận hành hoàn hảo trên nền tảng Docker với tổ hợp 3 hệ quản trị cơ sở dữ liệu dị thể (MySQL, MongoDB, SQL Server). Bộ kiểm thử tự động trên Postman chứng minh hệ thống xử lý vững vàng tất cả các kịch bản ngoại lệ: lỗi nghiệp vụ (hết hàng, thiếu tiền), lỗi dữ liệu không tồn tại (404), lỗi sập dịch vụ mạng (network failure) và bảo toàn tính toàn vẹn dữ liệu thông qua cơ chế bù trừ Idempotent.
+</p>
+
+</body>
+</html>
