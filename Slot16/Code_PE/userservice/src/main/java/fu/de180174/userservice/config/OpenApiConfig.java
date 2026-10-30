@@ -2,8 +2,11 @@ package fu.de180174.userservice.config;
 
 import io.swagger.v3.oas.models.OpenAPI;
 import io.swagger.v3.oas.models.info.Info;
+import io.swagger.v3.oas.models.servers.Server;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+
+import java.util.List;
 
 @Configuration
 public class OpenApiConfig {
@@ -14,6 +17,11 @@ public class OpenApiConfig {
                 .info(new Info()
                         .title("User Service API")
                         .version("1.0")
-                        .description("MSS301 Practical Exam - User Service API Documentation"));
+                        .description("MSS301 Practical Exam - User Service API Documentation"))
+                .servers(List.of(
+                        new Server().url("http://localhost:8080").description("Via Media Gateway (Port 8080)"),
+                        new Server().url("http://localhost:8081").description("Direct User Service (Port 8081)")
+                ));
     }
 }
+
