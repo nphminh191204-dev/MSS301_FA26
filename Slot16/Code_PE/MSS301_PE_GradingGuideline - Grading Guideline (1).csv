@@ -1,0 +1,34 @@
+Grading Guideline,,
+#,Item,Total mark
+Q1,Room Service,3.5 Point
+1.1,Create operation,1.0
+,  - Created successfully with valid input data,0.3
+,  - Full validate input data,0.5
+,  - Return correct status code and messages,0.2
+1.2,Update Operation,1.0
+,  - Updated successfully with valid input data,0.3
+,  - Full validate input data,0.5
+,  - Return correct status code and messages,0.2
+1.3,Delete (Set Maintenance) Operation,0.25
+1.4,Get by ID Operation,0.5
+1.5,Get all by filter condition,0.75
+Q2,Reservation Service,4.0 Point
+2.1,Create operation,"1,25"
+,  - Created successfully with valid input data,0.3
+,  - Full validate input data,"0,75"
+,  - Return correct status code and messages,0.2
+2.2,Update Operation,"1,25"
+,  - Updated successfully with valid input data,0.3
+,  - Full validate input data,"0,75"
+,  - Return correct status code and messages,0.2
+2.3,Cancel Reservation Operation,0.25
+2.4,Get by ID Operation,0.5
+2.5,Get all by filter condition,0.75
+Q3,Gateway,2.0 Point
+3.1,Gateway route requests of Room Service successfully,0.75
+3.2,Gateway route requests of Reservation Service successfully,0.75
+3.3,Configure CORS,0.5
+Q4,Project structure requirements,0.5 Point
+4.1,Source codes follow coding convention,"0,3"
+4.2,Project structure follows defined rules,"0,2"
+,Total,10
