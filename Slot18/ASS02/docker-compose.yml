@@ -35,7 +35,7 @@ services:
     restart: "no"
 
   ms-account:
-    build: ./MSAccount_StudentCode
+    build: ./MSAccount_DE180174
     ports:
       - "8081:8081"
     environment:
@@ -49,7 +49,7 @@ services:
         condition: service_completed_successfully
 
   ms-brand:
-    build: ./MSBrand_StudentCode
+    build: ./MSBrand_DE180174
     ports:
       - "8082:8082"
     environment:
@@ -60,7 +60,7 @@ services:
         condition: service_completed_successfully
 
   ms-watch:
-    build: ./MSWatch_StudentCode
+    build: ./MSWatch_DE180174
     ports:
       - "8083:8083"
     environment:
@@ -75,7 +75,7 @@ services:
         condition: service_started
 
   api-gateway:
-    build: ./APIGateway_StudentCode
+    build: ./APIGateway_DE180174
     ports:
       - "8080:8080"
     environment:
