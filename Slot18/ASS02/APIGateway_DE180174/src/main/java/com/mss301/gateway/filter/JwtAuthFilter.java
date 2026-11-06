@@ -34,7 +34,8 @@ public class JwtAuthFilter implements GlobalFilter, Ordered {
         "/api/auth/refresh",
         "/fallback",
         "/swagger-ui",
-        "/v3/api-docs"
+        "/v3/api-docs",
+        "/webjars"
     );
 
     @Override

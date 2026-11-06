@@ -40,6 +40,38 @@ spring:
                     name: watchCB
                     fallbackUri: forward:/fallback/watch
 
+            - id: account-docs
+              uri: ${ACCOUNT_SERVICE_URL:http://localhost:8081}
+              predicates:
+                - Path=/v3/api-docs/account
+              filters:
+                - SetPath=/v3/api-docs
+
+            - id: brand-docs
+              uri: ${BRAND_SERVICE_URL:http://localhost:8082}
+              predicates:
+                - Path=/v3/api-docs/brand
+              filters:
+                - SetPath=/v3/api-docs
+
+            - id: watch-docs
+              uri: ${WATCH_SERVICE_URL:http://localhost:8083}
+              predicates:
+                - Path=/v3/api-docs/watch
+              filters:
+                - SetPath=/v3/api-docs
+
+springdoc:
+  swagger-ui:
+    path: /swagger-ui.html
+    urls:
+      - name: MSAccount (Auth & Account)
+        url: /v3/api-docs/account
+      - name: MSBrand (Brand & Participant)
+        url: /v3/api-docs/brand
+      - name: MSWatch (Watch & Orchestrator)
+        url: /v3/api-docs/watch
+
 jwt:
   secret: ${JWT_SECRET:mss301-watch-management-secret-key-2025-very-long-string}
 
