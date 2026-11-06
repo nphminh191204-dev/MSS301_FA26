@@ -160,7 +160,7 @@
           ]
         },
         {
-          "name": "00.2 - Login as Staff (staff01)",
+          "name": "00.2 - Login as Staff (staff02)",
           "request": {
             "method": "POST",
             "header": [
@@ -184,7 +184,7 @@
             },
             "body": {
               "mode": "raw",
-              "raw": "{\n  \"username\": \"staff01\",\n  \"password\": \"@1\"\n}"
+              "raw": "{\n  \"username\": \"staff02\",\n  \"password\": \"@1\"\n}"
             }
           },
           "event": [
@@ -520,7 +520,7 @@
             },
             "body": {
               "mode": "raw",
-              "raw": "{\n  \"name\": \"Spoof Header Test Watch\",\n  \"price\": 250,\n  \"releaseDate\": \"{{today}}\",\n  \"brandId\": 1,\n  \"categoryId\": 1\n}"
+              "raw": "{\n  \"name\": \"Spoof Header Test Watch\",\n  \"price\": 6500,\n  \"releaseDate\": \"{{today}}\",\n  \"brandId\": 1,\n  \"categoryId\": 1,\n  \"caseMaterial\": \"Stainless Steel\",\n  \"strapMaterial\": \"Leather\",\n  \"waterpMaterial\": \"50m\",\n  \"stock\": 10\n}"
             }
           },
           "event": [
@@ -638,7 +638,7 @@
             },
             "body": {
               "mode": "raw",
-              "raw": "{\n  \"name\": \"Short\",\n  \"price\": 200,\n  \"releaseDate\": \"{{today}}\",\n  \"brandId\": 1,\n  \"categoryId\": 1\n}"
+              "raw": "{\n  \"name\": \"Short\",\n  \"price\": 6500,\n  \"releaseDate\": \"{{today}}\",\n  \"brandId\": 1,\n  \"categoryId\": 1,\n  \"caseMaterial\": \"Stainless Steel\",\n  \"strapMaterial\": \"Leather\",\n  \"waterpMaterial\": \"50m\",\n  \"stock\": 10\n}"
             }
           },
           "event": [
@@ -648,7 +648,7 @@
                 "type": "text/javascript",
                 "exec": [
                   "pm.test('Status is 400', () => pm.response.to.have.status(400));",
-                  "pm.test('No X-Saga-Id header', () => pm.expect(pm.response.headers.get('X-Saga-Id')).to.be.undefined);"
+                  "pm.test('No X-Saga-Id header', () => pm.expect(pm.response.headers.has('X-Saga-Id')).to.be.false);"
                 ]
               }
             }
@@ -683,7 +683,7 @@
             },
             "body": {
               "mode": "raw",
-              "raw": "{\n  \"name\": \"Luxury Chrono Watch\",\n  \"price\": 50,\n  \"releaseDate\": \"{{today}}\",\n  \"brandId\": 1,\n  \"categoryId\": 1\n}"
+              "raw": "{\n  \"name\": \"Omega Speedmaster Professional\",\n  \"price\": 50,\n  \"releaseDate\": \"{{today}}\",\n  \"brandId\": 1,\n  \"categoryId\": 1,\n  \"caseMaterial\": \"Stainless Steel\",\n  \"strapMaterial\": \"Leather\",\n  \"waterpMaterial\": \"50m\",\n  \"stock\": 10\n}"
             }
           },
           "event": [
@@ -693,7 +693,7 @@
                 "type": "text/javascript",
                 "exec": [
                   "pm.test('Status is 400', () => pm.response.to.have.status(400));",
-                  "pm.test('No X-Saga-Id header', () => pm.expect(pm.response.headers.get('X-Saga-Id')).to.be.undefined);"
+                  "pm.test('No X-Saga-Id header', () => pm.expect(pm.response.headers.has('X-Saga-Id')).to.be.false);"
                 ]
               }
             }
@@ -728,7 +728,7 @@
             },
             "body": {
               "mode": "raw",
-              "raw": "{\n  \"name\": \"Luxury Chrono Watch\",\n  \"price\": 200,\n  \"releaseDate\": \"2020-01-01\",\n  \"brandId\": 1,\n  \"categoryId\": 1\n}"
+              "raw": "{\n  \"name\": \"Omega Speedmaster Professional\",\n  \"price\": 6500,\n  \"releaseDate\": \"2020-01-01\",\n  \"brandId\": 1,\n  \"categoryId\": 1,\n  \"caseMaterial\": \"Stainless Steel\",\n  \"strapMaterial\": \"Leather\",\n  \"waterpMaterial\": \"50m\",\n  \"stock\": 10\n}"
             }
           },
           "event": [
@@ -738,7 +738,7 @@
                 "type": "text/javascript",
                 "exec": [
                   "pm.test('Status is 400', () => pm.response.to.have.status(400));",
-                  "pm.test('No X-Saga-Id header', () => pm.expect(pm.response.headers.get('X-Saga-Id')).to.be.undefined);"
+                  "pm.test('No X-Saga-Id header', () => pm.expect(pm.response.headers.has('X-Saga-Id')).to.be.false);"
                 ]
               }
             }
@@ -783,7 +783,7 @@
                 "type": "text/javascript",
                 "exec": [
                   "pm.test('Status is 400', () => pm.response.to.have.status(400));",
-                  "pm.test('No X-Saga-Id header', () => pm.expect(pm.response.headers.get('X-Saga-Id')).to.be.undefined);"
+                  "pm.test('No X-Saga-Id header', () => pm.expect(pm.response.headers.has('X-Saga-Id')).to.be.false);"
                 ]
               }
             }
@@ -818,7 +818,7 @@
             },
             "body": {
               "mode": "raw",
-              "raw": "{\n  \"name\": \"Luxury Chrono Watch\",\n  \"price\": 200,\n  \"releaseDate\": \"{{today}}\",\n  \"brandId\": 1,\n  \"categoryId\": 999\n}"
+              "raw": "{\n  \"name\": \"Omega Speedmaster Professional\",\n  \"price\": 6500,\n  \"releaseDate\": \"{{today}}\",\n  \"brandId\": 1,\n  \"categoryId\": 999,\n  \"caseMaterial\": \"Stainless Steel\",\n  \"strapMaterial\": \"Leather\",\n  \"waterpMaterial\": \"50m\",\n  \"stock\": 10\n}"
             }
           },
           "event": [
@@ -828,7 +828,7 @@
                 "type": "text/javascript",
                 "exec": [
                   "pm.test('Status is 400', () => pm.response.to.have.status(400));",
-                  "pm.test('No X-Saga-Id header', () => pm.expect(pm.response.headers.get('X-Saga-Id')).to.be.undefined);"
+                  "pm.test('No X-Saga-Id header', () => pm.expect(pm.response.headers.has('X-Saga-Id')).to.be.false);"
                 ]
               }
             }
@@ -907,7 +907,7 @@
             },
             "body": {
               "mode": "raw",
-              "raw": "{\n  \"name\": \"Omega Speedmaster Professional\",\n  \"price\": 6500,\n  \"releaseDate\": \"{{today}}\",\n  \"brandId\": 1,\n  \"categoryId\": 1\n}"
+              "raw": "{\n  \"name\": \"Omega Speedmaster Professional\",\n  \"price\": 6500,\n  \"releaseDate\": \"{{today}}\",\n  \"brandId\": 1,\n  \"categoryId\": 1,\n  \"caseMaterial\": \"Stainless Steel\",\n  \"strapMaterial\": \"Leather\",\n  \"waterpMaterial\": \"50m\",\n  \"stock\": 10\n}"
             }
           },
           "event": [
@@ -922,7 +922,7 @@
                   "pm.test('Has watchId & X-Saga-Id', () => {",
                   "    pm.expect(json.data.watchId).to.be.a('number');",
                   "    pm.expect(sagaHeader).to.be.a('string');",
-                  "    pm.collectionVariables.set('newWatchId', json.data.watchId);",
+                  "    pm.collectionVariables.set('newWatchId', String(json.data.watchId));",
                   "    pm.collectionVariables.set('sagaId', sagaHeader);",
                   "});"
                 ]
@@ -962,11 +962,12 @@
                 "exec": [
                   "pm.test('Status is 200', () => pm.response.to.have.status(200));",
                   "const json = pm.response.json();",
+                  "const stepStr = s => typeof s === 'string' ? s : `${s.phase} ${s.stepName} ${s.result}`;",
                   "pm.test('Saga status is COMPLETED', () => {",
                   "    pm.expect(json.data.status).to.eql('COMPLETED');",
                   "    const steps = json.data.steps;",
-                  "    pm.expect(steps.some(s => s.includes('EXECUTE CREATE_WATCH SUCCESS'))).to.be.true;",
-                  "    pm.expect(steps.some(s => s.includes('EXECUTE ASSIGN_BRAND SUCCESS'))).to.be.true;",
+                  "    pm.expect(steps.some(s => stepStr(s).includes('EXECUTE CREATE_WATCH SUCCESS'))).to.be.true;",
+                  "    pm.expect(steps.some(s => stepStr(s).includes('EXECUTE ASSIGN_BRAND SUCCESS'))).to.be.true;",
                   "});"
                 ]
               }
@@ -1086,7 +1087,7 @@
             },
             "body": {
               "mode": "raw",
-              "raw": "{\n  \"name\": \"Ghost Brand Test Watch\",\n  \"price\": 1200,\n  \"releaseDate\": \"{{today}}\",\n  \"brandId\": 999,\n  \"categoryId\": 1\n}"
+              "raw": "{\n  \"name\": \"Ghost Brand Test Watch\",\n  \"price\": 1200,\n  \"releaseDate\": \"{{today}}\",\n  \"brandId\": 999,\n  \"categoryId\": 1,\n  \"caseMaterial\": \"Stainless Steel\",\n  \"strapMaterial\": \"Leather\",\n  \"waterpMaterial\": \"50m\",\n  \"stock\": 10\n}"
             }
           },
           "event": [
@@ -1140,12 +1141,13 @@
                 "exec": [
                   "pm.test('Status is 200', () => pm.response.to.have.status(200));",
                   "const json = pm.response.json();",
+                  "const stepStr = s => typeof s === 'string' ? s : `${s.phase} ${s.stepName} ${s.result}`;",
                   "pm.test('Saga steps show compensation of DELETE_WATCH', () => {",
                   "    pm.expect(json.data.status).to.eql('COMPENSATED');",
                   "    const steps = json.data.steps;",
-                  "    pm.expect(steps.some(s => s.includes('EXECUTE CREATE_WATCH SUCCESS'))).to.be.true;",
-                  "    pm.expect(steps.some(s => s.includes('EXECUTE ASSIGN_BRAND FAILED'))).to.be.true;",
-                  "    pm.expect(steps.some(s => s.includes('COMPENSATE DELETE_WATCH SUCCESS'))).to.be.true;",
+                  "    pm.expect(steps.some(s => stepStr(s).includes('EXECUTE CREATE_WATCH SUCCESS'))).to.be.true;",
+                  "    pm.expect(steps.some(s => stepStr(s).includes('EXECUTE ASSIGN_BRAND FAILED'))).to.be.true;",
+                  "    pm.expect(steps.some(s => stepStr(s).includes('COMPENSATE DELETE_WATCH SUCCESS'))).to.be.true;",
                   "});"
                 ]
               }
@@ -1178,7 +1180,7 @@
                   "pm.test('Status is 200', () => pm.response.to.have.status(200));",
                   "const json = pm.response.json();",
                   "pm.test('Ghost watch is not in list', () => {",
-                  "    const found = json.data.some(w => w.watchName === 'Ghost Brand Test Watch');",
+                  "    const found = json.data.some(w => w.name === 'Ghost Brand Test Watch');",
                   "    pm.expect(found).to.be.false;",
                   "});"
                 ]
@@ -1299,7 +1301,7 @@
             },
             "body": {
               "mode": "raw",
-              "raw": "{\n  \"name\": \"Fault Simulation Watch 2\",\n  \"price\": 1500,\n  \"releaseDate\": \"{{today}}\",\n  \"brandId\": 1,\n  \"categoryId\": 1\n}"
+              "raw": "{\n  \"name\": \"Fault Simulation Watch 2\",\n  \"price\": 1500,\n  \"releaseDate\": \"{{today}}\",\n  \"brandId\": 1,\n  \"categoryId\": 1,\n  \"caseMaterial\": \"Stainless Steel\",\n  \"strapMaterial\": \"Leather\",\n  \"waterpMaterial\": \"50m\",\n  \"stock\": 10\n}"
             }
           },
           "event": [
@@ -1352,11 +1354,12 @@
                 "exec": [
                   "pm.test('Status is 200', () => pm.response.to.have.status(200));",
                   "const json = pm.response.json();",
+                  "const stepStr = s => typeof s === 'string' ? s : `${s.phase} ${s.stepName} ${s.result}`;",
                   "pm.test('Steps executed in LIFO order', () => {",
                   "    pm.expect(json.data.status).to.eql('COMPENSATED');",
                   "    const steps = json.data.steps;",
-                  "    const unassignIdx = steps.findIndex(s => s.includes('COMPENSATE UNASSIGN_BRAND SUCCESS'));",
-                  "    const deleteIdx = steps.findIndex(s => s.includes('COMPENSATE DELETE_WATCH SUCCESS'));",
+                  "    const unassignIdx = steps.findIndex(s => stepStr(s).includes('COMPENSATE UNASSIGN_BRAND SUCCESS'));",
+                  "    const deleteIdx = steps.findIndex(s => stepStr(s).includes('COMPENSATE DELETE_WATCH SUCCESS'));",
                   "    pm.expect(unassignIdx).to.be.above(-1);",
                   "    pm.expect(deleteIdx).to.be.above(-1);",
                   "    pm.expect(unassignIdx).to.be.below(deleteIdx);",
@@ -1392,7 +1395,7 @@
                   "pm.test('Status is 200', () => pm.response.to.have.status(200));",
                   "const json = pm.response.json();",
                   "pm.test('Fault watch is not in list', () => {",
-                  "    const found = json.data.some(w => w.watchName === 'Fault Simulation Watch 2');",
+                  "    const found = json.data.some(w => w.name === 'Fault Simulation Watch 2');",
                   "    pm.expect(found).to.be.false;",
                   "});"
                 ]
@@ -1477,7 +1480,7 @@
             },
             "body": {
               "mode": "raw",
-              "raw": "{\n  \"name\": \"Tag Heuer Monaco Automatic\",\n  \"price\": 4500,\n  \"releaseDate\": \"{{today}}\",\n  \"brandId\": 2,\n  \"categoryId\": 2\n}"
+              "raw": "{\n  \"name\": \"Tag Heuer Monaco Automatic\",\n  \"price\": 4500,\n  \"releaseDate\": \"{{today}}\",\n  \"brandId\": 2,\n  \"categoryId\": 2,\n  \"caseMaterial\": \"Stainless Steel\",\n  \"strapMaterial\": \"Leather\",\n  \"waterpMaterial\": \"50m\",\n  \"stock\": 10\n}"
             }
           },
           "event": [
@@ -1606,7 +1609,7 @@
             },
             "body": {
               "mode": "raw",
-              "raw": "{\n  \"name\": \"Tag Heuer Invalid Brand\",\n  \"price\": 5000,\n  \"releaseDate\": \"{{today}}\",\n  \"brandId\": 999,\n  \"categoryId\": 2\n}"
+              "raw": "{\n  \"name\": \"Tag Heuer Invalid Brand\",\n  \"price\": 5000,\n  \"releaseDate\": \"{{today}}\",\n  \"brandId\": 999,\n  \"categoryId\": 2,\n  \"caseMaterial\": \"Stainless Steel\",\n  \"strapMaterial\": \"Leather\",\n  \"waterpMaterial\": \"50m\",\n  \"stock\": 10\n}"
             }
           },
           "event": [
@@ -1659,10 +1662,11 @@
                 "exec": [
                   "pm.test('Status is 200', () => pm.response.to.have.status(200));",
                   "const json = pm.response.json();",
+                  "const stepStr = s => typeof s === 'string' ? s : `${s.phase} ${s.stepName} ${s.result}`;",
                   "pm.test('Saga steps show RESTORE_WATCH', () => {",
                   "    pm.expect(json.data.status).to.eql('COMPENSATED');",
                   "    const steps = json.data.steps;",
-                  "    pm.expect(steps.some(s => s.includes('COMPENSATE RESTORE_WATCH SUCCESS'))).to.be.true;",
+                  "    pm.expect(steps.some(s => stepStr(s).includes('COMPENSATE RESTORE_WATCH SUCCESS'))).to.be.true;",
                   "});"
                 ]
               }
@@ -1698,7 +1702,7 @@
                   "const w = json.data.find(x => x.watchId === targetId);",
                   "pm.test('Watch preserved previous valid values', () => {",
                   "    pm.expect(w).to.not.be.undefined;",
-                  "    pm.expect(w.watchName).to.eql('Tag Heuer Monaco Automatic');",
+                  "    pm.expect(w.name).to.eql('Tag Heuer Monaco Automatic');",
                   "    pm.expect(w.price).to.eql(4500.0);",
                   "});"
                 ]
@@ -1741,7 +1745,7 @@
             },
             "body": {
               "mode": "raw",
-              "raw": "{\n  \"name\": \"Rolex Submariner Date\",\n  \"price\": 9500,\n  \"releaseDate\": \"{{today}}\",\n  \"brandId\": 3,\n  \"categoryId\": 1\n}"
+              "raw": "{\n  \"name\": \"Rolex Submariner Date\",\n  \"price\": 9500,\n  \"releaseDate\": \"{{today}}\",\n  \"brandId\": 3,\n  \"categoryId\": 1,\n  \"caseMaterial\": \"Stainless Steel\",\n  \"strapMaterial\": \"Leather\",\n  \"waterpMaterial\": \"50m\",\n  \"stock\": 10\n}"
             }
           },
           "event": [
@@ -1794,11 +1798,12 @@
                 "exec": [
                   "pm.test('Status is 200', () => pm.response.to.have.status(200));",
                   "const json = pm.response.json();",
+                  "const stepStr = s => typeof s === 'string' ? s : `${s.phase} ${s.stepName} ${s.result}`;",
                   "pm.test('Steps contain ASSIGN_BRAND_BACK then RESTORE_WATCH', () => {",
                   "    pm.expect(json.data.status).to.eql('COMPENSATED');",
                   "    const steps = json.data.steps;",
-                  "    const backIdx = steps.findIndex(s => s.includes('COMPENSATE ASSIGN_BRAND_BACK SUCCESS'));",
-                  "    const restoreIdx = steps.findIndex(s => s.includes('COMPENSATE RESTORE_WATCH SUCCESS'));",
+                  "    const backIdx = steps.findIndex(s => stepStr(s).includes('COMPENSATE ASSIGN_BRAND_BACK SUCCESS'));",
+                  "    const restoreIdx = steps.findIndex(s => stepStr(s).includes('COMPENSATE RESTORE_WATCH SUCCESS'));",
                   "    pm.expect(backIdx).to.be.above(-1);",
                   "    pm.expect(restoreIdx).to.be.above(-1);",
                   "    pm.expect(backIdx).to.be.below(restoreIdx);",
@@ -1838,7 +1843,7 @@
             },
             "body": {
               "mode": "raw",
-              "raw": "{\n  \"name\": \"Non Existent Watch Item\",\n  \"price\": 1000,\n  \"releaseDate\": \"{{today}}\",\n  \"brandId\": 1,\n  \"categoryId\": 1\n}"
+              "raw": "{\n  \"name\": \"Non Existent Watch Item\",\n  \"price\": 6500,\n  \"releaseDate\": \"{{today}}\",\n  \"brandId\": 1,\n  \"categoryId\": 1,\n  \"caseMaterial\": \"Stainless Steel\",\n  \"strapMaterial\": \"Leather\",\n  \"waterpMaterial\": \"50m\",\n  \"stock\": 10\n}"
             }
           },
           "event": [
@@ -1937,10 +1942,11 @@
                 "exec": [
                   "pm.test('Status is 200', () => pm.response.to.have.status(200));",
                   "const json = pm.response.json();",
+                  "const stepStr = s => typeof s === 'string' ? s : `${s.phase} ${s.stepName} ${s.result}`;",
                   "pm.test('Step compensated ASSIGN_BRAND_BACK', () => {",
                   "    pm.expect(json.data.status).to.eql('COMPENSATED');",
                   "    const steps = json.data.steps;",
-                  "    pm.expect(steps.some(s => s.includes('COMPENSATE ASSIGN_BRAND_BACK SUCCESS'))).to.be.true;",
+                  "    pm.expect(steps.some(s => stepStr(s).includes('COMPENSATE ASSIGN_BRAND_BACK SUCCESS'))).to.be.true;",
                   "});"
                 ]
               }
@@ -2027,9 +2033,9 @@
                   "pm.test('Status is 200 OK', () => pm.response.to.have.status(200));",
                   "const json = pm.response.json();",
                   "const sagaHeader = pm.response.headers.get('X-Saga-Id');",
-                  "pm.test('Pivot committed, saga status is COMPLETED', () => {",
-                  "    pm.expect(json.data.sagaStatus).to.eql('COMPLETED');",
-                  "    pm.collectionVariables.set('sagaIdG', sagaHeader || json.data.sagaId);",
+                  "pm.collectionVariables.set('sagaIdG', sagaHeader);",
+                  "pm.test('Pivot committed, message contains COMPLETED', () => {",
+                  "    pm.expect(json.message).to.include('COMPLETED');",
                   "});"
                 ]
               }
@@ -2068,10 +2074,11 @@
                 "exec": [
                   "pm.test('Status is 200', () => pm.response.to.have.status(200));",
                   "const json = pm.response.json();",
+                  "const stepStr = s => typeof s === 'string' ? s : `${s.phase} ${s.stepName} ${s.result}`;",
                   "pm.test('Status COMPLETED and fault was skipped', () => {",
                   "    pm.expect(json.data.status).to.eql('COMPLETED');",
                   "    const steps = json.data.steps;",
-                  "    pm.expect(steps.some(s => s.includes('FAULT FAULT_INJECTION SKIPPED'))).to.be.true;",
+                  "    pm.expect(steps.some(s => stepStr(s).includes('FAULT FAULT_INJECTION SKIPPED'))).to.be.true;",
                   "});"
                 ]
               }
